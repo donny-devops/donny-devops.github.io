@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSS Feed Website</title>
+  <meta name="description" content="A polished static RSS feed website template with a live-style feed layout, categories, featured story, and theme toggle." />
+  <meta property="og:title" content="RSS Feed Website" />
+  <meta property="og:description" content="A modern editorial RSS feed website template built as a single static HTML file." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet" />
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --text-3xl: clamp(2.5rem, 1rem + 4vw, 5rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #fbfbf9;
+      --color-surface-offset: #f1eee8;
+      --color-surface-dynamic: #e7e3db;
+      --color-divider: #ddd7cd;
+      --color-border: #d3cec4;
+      --color-text: #252119;
+      --color-text-muted: #6e6b64;
+      --color-text-faint: #a8a49c;
+      --color-text-inverse: #f8f7f4;
+      --color-primary: #0c6a72;
+      --color-primary-hover: #0a5359;
+      --color-primary-highlight: #d7e6e4;
+      --color-accent: #8c4f25;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-xl: 1.5rem;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+      --shadow-md: 0 8px 24px oklch(0.2 0.01 80 / 0.1);
+      --shadow-lg: 0 16px 40px oklch(0.2 0.01 80 / 0.14);
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --content-default: 1100px;
+      --content-wide: 1280px;
+      --font-display: 'Boska', Georgia, serif;
+      --font-body: 'General Sans', Inter, sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #171614;
+      --color-surface: #1d1b19;
+      --color-surface-2: #252220;
+      --color-surface-offset: #221f1c;
+      --color-surface-dynamic: #312d2a;
+      --color-divider: #2d2a27;
+      --color-border: #3d3935;
+      --color-text: #e6e2db;
+      --color-text-muted: #b2ada4;
+      --color-text-faint: #7e796f;
+      --color-text-inverse: #1a1714;
+      --color-primary: #69aab0;
+      --color-primary-hover: #8fc4c9;
+      --color-primary-highlight: #273536;
+      --color-accent: #d59b6d;
+      --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.22);
+      --shadow-md: 0 8px 24px oklch(0 0 0 / 0.3);
+      --shadow-lg: 0 16px 40px oklch(0 0 0 / 0.4);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --color-bg: #171614;
+        --color-surface: #1d1b19;
+        --color-surface-2: #252220;
+        --color-surface-offset: #221f1c;
+        --color-surface-dynamic: #312d2a;
+        --color-divider: #2d2a27;
+        --color-border: #3d3935;
+        --color-text: #e6e2db;
+        --color-text-muted: #b2ada4;
+        --color-text-faint: #7e796f;
+        --color-text-inverse: #1a1714;
+        --color-primary: #69aab0;
+        --color-primary-hover: #8fc4c9;
+        --color-primary-highlight: #273536;
+        --color-accent: #d59b6d;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: none; text-size-adjust: none; scroll-behavior: smooth; scroll-padding-top: 6rem;
+    }
+    body {
+      min-height: 100dvh; line-height: 1.6; font-family: var(--font-body); font-size: var(--text-base);
+      color: var(--color-text); background: radial-gradient(circle at top left, color-mix(in oklab, var(--color-primary) 8%, transparent), transparent 28%), var(--color-bg);
+    }
+    img, svg { display:block; max-width:100%; height:auto; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; color: inherit; }
+    button { border: none; cursor: pointer; background: none; }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+
+    .skip-link {
+      position:absolute; left:var(--space-4); top:-3rem; background:var(--color-primary); color:var(--color-text-inverse);
+      padding:var(--space-3) var(--space-4); border-radius:var(--radius-full); z-index:100;
+    }
+    .skip-link:focus { top: var(--space-4); }
+
+    .container { width:min(calc(100% - 2rem), var(--content-default)); margin-inline:auto; }
+    .wide { width:min(calc(100% - 2rem), var(--content-wide)); margin-inline:auto; }
+
+    .site-header {
+      position: sticky; top:0; z-index:50; backdrop-filter: blur(14px);
+      background: color-mix(in oklab, var(--color-bg) 84%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    }
+    .header-inner {
+      display:flex; align-items:center; justify-content:space-between; gap:var(--space-4);
+      min-height:4.75rem;
+    }
+    .brand { display:flex; align-items:center; gap:var(--space-3); }
+    .logo {
+      width:2.5rem; height:2.5rem; padding:0.4rem; border-radius:0.8rem; background:var(--color-surface);
+      border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent); box-shadow: var(--shadow-sm);
+    }
+    .brand-title { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-text-muted); }
+    .brand-name { font-family: var(--font-display); font-size: var(--text-lg); line-height: 1; }
+
+    .nav-row { display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; }
+    .nav-link, .pill {
+      min-height:44px; display:inline-flex; align-items:center; padding:0.7rem 1rem; border-radius:var(--radius-full);
+      border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent); background: color-mix(in oklab, var(--color-surface) 90%, transparent);
+      font-size: var(--text-sm); color: var(--color-text-muted); transition: all var(--transition-interactive);
+    }
+    .nav-link:hover, .pill:hover, .theme-toggle:hover { border-color: color-mix(in oklab, var(--color-primary) 35%, var(--color-border)); color: var(--color-text); }
+
+    .theme-toggle {
+      width:44px; height:44px; display:grid; place-items:center; border-radius:50%; border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      background: var(--color-surface);
+    }
+
+    .hero {
+      padding: clamp(var(--space-12), 10vw, var(--space-24)) 0 var(--space-12);
+    }
+    .hero-grid {
+      display:grid; grid-template-columns: 1.3fr 0.9fr; gap:var(--space-8); align-items:end;
+    }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:var(--space-2); padding:0.45rem 0.8rem; border-radius:var(--radius-full);
+      background: var(--color-primary-highlight); color: var(--color-primary); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.14em;
+      margin-bottom: var(--space-5);
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5.8rem); line-height: 0.98; max-width: 11ch; letter-spacing: -0.03em;
+    }
+    .hero-copy {
+      margin-top: var(--space-5); color: var(--color-text-muted); max-width: 56ch;
+    }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:var(--space-3); margin-top: var(--space-6); }
+    .btn-primary, .btn-secondary {
+      min-height:48px; padding:0.9rem 1.2rem; border-radius: var(--radius-full); transition: all var(--transition-interactive);
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-text-inverse); box-shadow: var(--shadow-sm); }
+    .btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--color-surface); border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    }
+
+    .hero-panel {
+      padding: var(--space-6); background: linear-gradient(180deg, color-mix(in oklab, var(--color-surface-2) 92%, transparent), var(--color-surface));
+      border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent); border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+    }
+    .mini-stat { display:flex; justify-content:space-between; gap:var(--space-4); padding-bottom:var(--space-4); margin-bottom:var(--space-4); border-bottom:1px solid var(--color-divider); }
+    .mini-stat strong { font-size: var(--text-xl); font-family: var(--font-display); }
+    .feed-lines { display:grid; gap:var(--space-3); }
+    .feed-line {
+      display:grid; grid-template-columns:auto 1fr auto; gap:var(--space-3); align-items:center; padding:0.9rem 0;
+      border-bottom:1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+      font-size: var(--text-sm);
+    }
+    .dot { width:0.7rem; height:0.7rem; border-radius:50%; background: var(--color-accent); }
+    .time { color: var(--color-text-faint); }
+
+    .section { padding: clamp(var(--space-8), 7vw, var(--space-16)) 0; }
+    .section-head {
+      display:flex; justify-content:space-between; gap:var(--space-4); align-items:end; margin-bottom: var(--space-6);
+    }
+    .section-title { font-family: var(--font-display); font-size: var(--text-xl); }
+    .section-copy { color: var(--color-text-muted); max-width: 58ch; }
+
+    .featured-grid {
+      display:grid; grid-template-columns: 1.25fr 0.75fr; gap:var(--space-6);
+    }
+    .feature-card, .stack-card, .feed-card, .tool-card {
+      background: color-mix(in oklab, var(--color-surface) 96%, transparent);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);
+    }
+    .feature-card { overflow:hidden; }
+    .feature-visual {
+      aspect-ratio: 16/9;
+      background:
+        radial-gradient(circle at 20% 30%, color-mix(in oklab, var(--color-primary) 38%, transparent), transparent 28%),
+        radial-gradient(circle at 80% 20%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 24%),
+        linear-gradient(135deg, color-mix(in oklab, var(--color-surface-offset) 86%, transparent), var(--color-surface-2));
+      position:relative;
+    }
+    .feature-visual::after {
+      content:"<rss/>"; position:absolute; inset:auto var(--space-5) var(--space-5) auto; font-family: monospace; font-size: 0.9rem;
+      color: var(--color-text-faint); padding:0.5rem 0.8rem; border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-full); background: color-mix(in oklab, var(--color-bg) 70%, transparent);
+    }
+    .card-body { padding: var(--space-6); }
+    .meta { display:flex; flex-wrap:wrap; gap:var(--space-3); color: var(--color-text-faint); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; }
+    .card-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.7rem); line-height:1.05; margin-top: var(--space-4); max-width: 14ch; }
+    .card-copy { margin-top: var(--space-4); color: var(--color-text-muted); max-width: 58ch; }
+    .card-link { margin-top: var(--space-5); display:inline-flex; align-items:center; gap:0.5rem; color: var(--color-primary); font-weight: 600; }
+
+    .stack { display:grid; gap:var(--space-4); }
+    .stack-card { padding: var(--space-5); }
+    .stack-card h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+    .stack-card p { color: var(--color-text-muted); }
+
+    .chips { display:flex; flex-wrap:wrap; gap:var(--space-3); margin-bottom: var(--space-6); }
+
+    .feed-layout {
+      display:grid; grid-template-columns: 0.8fr 1.2fr; gap:var(--space-6);
+    }
+    .tool-card, .feed-card { padding: var(--space-6); }
+    .tool-card ul, .feed-card ul { list-style:none; display:grid; gap:var(--space-4); }
+    .tool-card li, .feed-card li { padding-bottom: var(--space-4); border-bottom: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent); }
+    .feed-card li:last-child, .tool-card li:last-child { border-bottom:none; padding-bottom:0; }
+    .feed-card strong, .tool-card strong { display:block; font-size: var(--text-base); margin-bottom:0.15rem; }
+    .muted { color: var(--color-text-muted); }
+
+    .newsletter {
+      display:grid; grid-template-columns: 1fr auto; gap:var(--space-3); margin-top: var(--space-6);
+      padding: var(--space-3); background: var(--color-surface-offset); border-radius: calc(var(--radius-xl) - var(--space-3));
+      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+    }
+    .newsletter input {
+      min-height:48px; border:none; background:transparent; padding:0 var(--space-3);
+    }
+
+    .footer {
+      padding: var(--space-10) 0 var(--space-12); border-top:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      color: var(--color-text-muted);
+    }
+    .footer-grid { display:flex; justify-content:space-between; gap:var(--space-4); flex-wrap:wrap; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .featured-grid, .feed-layout { grid-template-columns: 1fr; }
+      .section-head, .header-inner { align-items:flex-start; }
+      .header-inner { flex-direction:column; padding: var(--space-3) 0; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding-top: var(--space-10); }
+      .hero h1 { max-width: 9ch; }
+      .newsletter { grid-template-columns: 1fr; }
+      .hero-actions, .nav-row { width:100%; }
+      .nav-link, .pill { flex: 1 1 auto; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" aria-label="Feedline home">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 33C17 33 22.5 38.5 22.5 45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M10 21C23.5 21 34.5 32 34.5 45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M10 9C30.5 9 39 17.5 39 38" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="12" cy="44" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Signal-first feeds</div>
+          <div class="brand-name">Feedline</div>
+        </div>
+      </div>
+
+      <nav class="nav-row" aria-label="Primary navigation">
+        <a class="nav-link" href="#featured">Featured</a>
+        <a class="nav-link" href="#streams">Streams</a>
+        <a class="nav-link" href="#toolkit">Toolkit</a>
+        <a class="nav-link" href="#subscribe">Subscribe</a>
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wide hero-grid">
+        <div>
+          <span class="eyebrow">Editorial RSS monitor</span>
+          <h1>Follow the web without losing the signal.</h1>
+          <p class="hero-copy">This static website template gives you an RSS-style homepage with a featured story, category streams, curated updates, and a clean reading experience that feels more like a publication than a dashboard.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#streams">Browse feed streams</a>
+            <a class="btn-secondary" href="#subscribe">Set up subscription block</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Feed overview">
+          <div class="mini-stat">
+            <div>
+              <div class="brand-title">Sources tracked</div>
+              <strong>128</strong>
+            </div>
+            <div>
+              <div class="brand-title">Fresh today</div>
+              <strong>36</strong>
+            </div>
+          </div>
+          <div class="feed-lines">
+            <div class="feed-line"><span class="dot"></span><span>Cloud engineering blogs published 4 new posts.</span><span class="time">5m</span></div>
+            <div class="feed-line"><span class="dot"></span><span>Security advisories updated with two critical CVEs.</span><span class="time">18m</span></div>
+            <div class="feed-line"><span class="dot"></span><span>DevOps newsletters pushed Tuesday editions.</span><span class="time">34m</span></div>
+            <div class="feed-line"><span class="dot"></span><span>Open-source releases stream detected 9 version bumps.</span><span class="time">1h</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="featured">
+      <div class="wide">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Featured story</h2>
+            <p class="section-copy">Use this area for your lead item, editorial note, or the top article pulled from your preferred RSS source.</p>
+          </div>
+          <span class="pill">Updated every hour</span>
+        </div>
+
+        <div class="featured-grid">
+          <article class="feature-card">
+            <div class="feature-visual" aria-hidden="true"></div>
+            <div class="card-body">
+              <div class="meta"><span>Analysis</span><span>Automation</span><span>8 min read</span></div>
+              <h3 class="card-title">Building a homepage that turns raw feeds into readable coverage.</h3>
+              <p class="card-copy">Instead of dumping headlines in a plain list, this layout highlights one key story, keeps categories scannable, and leaves space for descriptions, timestamps, and source labels.</p>
+              <a class="card-link" href="#toolkit">See the section pattern <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <div class="stack">
+            <article class="stack-card">
+              <div class="meta"><span>Source mix</span><span>12 feeds</span></div>
+              <h3>Channel grouping.</h3>
+              <p>Separate security, engineering, AI, and product updates so visitors can move from broad discovery to focused reading.</p>
+            </article>
+            <article class="stack-card">
+              <div class="meta"><span>Reader mode</span><span>Dark + light</span></div>
+              <h3>Accessible viewing.</h3>
+              <p>Comfortable text scale, contrast-safe surfaces, and a manual theme toggle make this template suitable for long reading sessions.</p>
+            </article>
+            <article class="stack-card">
+              <div class="meta"><span>Static deploy</span><span>Single file</span></div>
+              <h3>Simple hosting.</h3>
+              <p>Deploy it to GitHub Pages, Netlify, or any static host, then connect your own RSS parsing workflow later.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="streams">
+      <div class="wide">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Feed streams</h2>
+            <p class="section-copy">These blocks are designed for category-based RSS sections or imported content buckets from automation tools.</p>
+          </div>
+        </div>
+
+        <div class="chips" aria-label="Topics">
+          <span class="pill">DevOps</span>
+          <span class="pill">Cloud</span>
+          <span class="pill">Security</span>
+          <span class="pill">AI</span>
+          <span class="pill">Open source</span>
+        </div>
+
+        <div class="feed-layout">
+          <aside class="tool-card" id="toolkit">
+            <h3 class="section-title" style="font-size: var(--text-lg); margin-bottom: 1rem;">Toolkit block</h3>
+            <ul>
+              <li><strong>RSS sources.</strong><span class="muted">Add site feeds, newsletters, release notes, or internal publication endpoints.</span></li>
+              <li><strong>Automation layer.</strong><span class="muted">Connect parsing with Zapier, Make, n8n, GitHub Actions, or a small serverless function.</span></li>
+              <li><strong>Publishing model.</strong><span class="muted">Render top items into this page or generate fresh static HTML on a schedule.</span></li>
+            </ul>
+          </aside>
+
+          <section class="feed-card" aria-label="Latest entries">
+            <ul>
+              <li><strong>Container security digest.</strong><span class="muted">Three notable advisories, one tooling release, and a concise editor summary for busy readers.</span></li>
+              <li><strong>Platform engineering weekly.</strong><span class="muted">New posts on internal developer portals, ephemeral environments, and service ownership patterns.</span></li>
+              <li><strong>AI ops notebook.</strong><span class="muted">Fresh links on model observability, inference cost controls, and agent workflow evaluation.</span></li>
+              <li><strong>Release radar.</strong><span class="muted">A compact list of versions, dates, and source links for tracking updates without leaving the site.</span></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="subscribe">
+      <div class="container">
+        <div class="feature-card">
+          <div class="card-body">
+            <div class="meta"><span>Newsletter block</span><span>Optional CTA</span></div>
+            <h2 class="section-title" style="margin-top: 1rem;">Add a simple subscriber capture section.</h2>
+            <p class="card-copy">Use this module for email updates, a follow link, or a handoff into your automation stack. The form is static here, but the structure is ready for your endpoint.</p>
+            <form class="newsletter" onsubmit="event.preventDefault()" aria-label="Subscribe form">
+              <label class="sr-only" for="email">Email address</label>
+              <input id="email" type="email" placeholder="Enter your email address" aria-label="Email address" />
+              <button class="btn-primary" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <p>Feedline is a static RSS feed website template for curated updates, headline streams, and editorial summaries.</p>
+      <p>Built with semantic HTML, responsive CSS, and a single-file deploy model.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+
+      const icons = {
+        dark: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+        light: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      };
+
+      function syncButton() {
+        toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        toggle.innerHTML = theme === 'dark' ? icons.light : icons.dark;
+      }
+
+      syncButton();
+      toggle.addEventListener('click', function () {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        syncButton();
+      });
+    }());
+  </script>
+</body>
+</html>

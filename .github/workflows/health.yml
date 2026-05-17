@@ -1,0 +1,26 @@
+name: Site Health
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    name: Green check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate site entrypoint exists
+        run: |
+          test -f index.html || test -f README.md
+
+      - name: Report status
+        run: echo "GitHub Pages repository health checks passed."
